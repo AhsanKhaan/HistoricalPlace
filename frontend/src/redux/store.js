@@ -1,7 +1,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers';
-import { createEpicMiddleware } from 'redux-observable';
+import { epicMiddleware } from './epics';
 
 
 /**
@@ -9,7 +9,7 @@ import { createEpicMiddleware } from 'redux-observable';
  */
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(createEpicMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(epicMiddleware),
 });
 
 

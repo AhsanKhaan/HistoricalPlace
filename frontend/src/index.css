@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +16,20 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  --text-color: #290000;
+  --bg-color: #EFEFEF;
+  --second-bg-color:  #2C3E50;
+  --btn-color: #23D67C;
+  --links-color: #3498DB;
+
+
+}
+
+#header{
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 20px;
 }
 
 a {
@@ -32,6 +47,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 h1 {
@@ -46,27 +63,31 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--bg-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--second-bg-color);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+nav {
+  
+}
+
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--text-color);
+    background-color: var(--bg-color);
   }
   a:hover {
-    color: #747bff;
+    color: var(--links-color);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--bg-color);
   }
 }

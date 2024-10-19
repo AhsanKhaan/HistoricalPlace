@@ -9,7 +9,7 @@
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { ofType } from 'redux-observable';
 import { map } from 'rxjs/operators';
-import { markVisited } from './slices/placesSlice';
+import { markVisited } from './slices/placesSilces.jsx';
 
 // Define your epics
 const markVisitedEpic = (action$) => action$.pipe(
