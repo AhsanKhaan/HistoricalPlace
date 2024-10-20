@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "./server.js",
-  "proxy": "https://legacy-landmarks-updated.vercel.app",
   "scripts": {
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
     "start-frontend": "npm start --prefix frontend",
