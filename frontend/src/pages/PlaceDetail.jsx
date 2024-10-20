@@ -16,7 +16,7 @@ const PlaceDetail = () => {
     <div className="p-4">
       {place ? (
         <>
-          <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
+          <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg row">
             <button
               className="relative top-0 left-100 text-align-left mb-4 px-4 py-2 bg-black hover:bg-gray-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 align-left"
               onClick={handleGoBack}
@@ -30,7 +30,7 @@ const PlaceDetail = () => {
               alt={place.name} />
               <div className="flex-grow">
                 <h2 className="text-align-left text-2xl font-bold text-gray-800 mb-4">{place.name}</h2>
-                <p className="text-gray-700">{place.description}</p>
+                <div className="text-gray-700 text-left max-h-32 overflow-y-auto row">{place.description}</div>
               </div>
             </div>
 

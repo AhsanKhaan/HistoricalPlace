@@ -11,9 +11,9 @@ const PlaceCard = ({ place, onMarkVisited }) => {
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg m-4">
       <img className="w-full" src={place.image} alt={place.name} />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{place.name}</div>
-        <p className="text-gray-700 text-base">{place.description}</p>
+      <div className="px-6 py-4 ">
+        <div className="font-bold text-xl mb-2 ">{place.name}</div>
+        <p className="text-gray-700  text-center overflow-hidden text-ellipsis h-12">{place.description}</p>
         <div className="">
           <button
             className={`mt-4 mr-1 px-4 py-2 rounded focus:outline-none focus:border-transparent ${place.visited ? "bg-red-500 text-white" : "bg-green-500 text-white"}`}
