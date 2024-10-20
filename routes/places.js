@@ -51,7 +51,7 @@ router.get(
       });
 
       const places = await Promise.all(placesPromises); // Resolve all promises
-      res.setHeader("Access-Control-Allow-Origin", "*")
+      res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL_PROD)
       res.setHeader("Access-Control-Allow-Credentials", "true");
       res.setHeader("Access-Control-Max-Age", "1800");
       res.setHeader("Access-Control-Allow-Headers", "content-type");
@@ -94,7 +94,7 @@ router.get(
       });
 
       const places = await Promise.all(placesPromises); // Resolve all promises
-      res.setHeader("Access-Control-Allow-Origin", "*")
+      res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL_PROD)
       res.setHeader("Access-Control-Allow-Credentials", "true");
       res.setHeader("Access-Control-Max-Age", "1800");
       res.setHeader("Access-Control-Allow-Headers", "content-type");
