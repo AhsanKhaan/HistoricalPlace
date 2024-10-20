@@ -10,7 +10,7 @@ const PlaceDetail = () => {
   const handleGoBack = () => {
     navigate('/');
   };
-  const place = useSelector(state => state.places.find(p => p.id === parseInt(id)));
+  const place = useSelector(state => {return state.places.places.find(p => p.id === parseInt(id))});
 
   return (
     <div className="p-4">

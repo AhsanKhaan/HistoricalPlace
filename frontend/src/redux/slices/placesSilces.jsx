@@ -1,27 +1,61 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL; 
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const fetchPlaces = createAsyncThunk('places/fetchPlaces', async (_, thunkAPI) => {
+  const { rejectWithValue } = thunkAPI;
+  let attempts = 0;
+  const maxAttempts = 5;
+
+  while (attempts < maxAttempts) {
+    try {
+      const response = await axios.get(`${baseURL}places`);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.status === 429) {
+        attempts += 1;
+        const waitTime = Math.pow(2, attempts) * 1000; // Exponential backoff
+        await delay(waitTime);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+
+  return rejectWithValue('Rate limit exceeded. Please try again later.');
+});
 export const placesSlice = createSlice({
   name: 'places',
-  initialState: [
-    { id: 1, name: 'Pyramids of Giza', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Ancient pyramids in Egypt.', visited: false },
-    { id: 2, name: 'Great Wall of China', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Historic wall in China.', visited: false },
-    { id: 3, name: 'Taj Mahal', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Marble mausoleum in India.', visited: false },
-    { id: 4, name: 'Christ the Redeemer', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Giant Art Deco statue in Brazil.', visited: false },
-    { id: 5, name: 'The Great Barrier Reef', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Largest coral reef system in Australia.', visited: false },
-    { id: 6, name: 'The Acropolis of Athens', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Ancient citadel in Greece.', visited: false },
-    { id: 7, name: 'The Eiffel Tower', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Iron lattice tower in France.', visited: false },
-    { id: 8, name: 'Circus', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Historic Cirus.', visited: true },
-    { id: 9, name: 'Monument Meusum', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Historic monument Muesum.', visited: false },
-    { id: 10, name: 'Shakar pariyan', image: 'https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg', description: 'Sharsasas.', visited: false },
-    // Add more places as needed
-  ],
+  initialState: {
+    places: [],
+    loading: false,
+    error: null,
+  },
   reducers: {
     markVisited: (state, action) => {
-      const place = state.find(p => p.id === action.payload);
+      const place = state.places.find((p) => p.id === action.payload);
       if (place) {
         place.visited = !place.visited;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPlaces.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPlaces.fulfilled, (state, action) => {
+        state.loading = false;
+        state.places = action.payload;
+      })
+      .addCase(fetchPlaces.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   },
 });
 

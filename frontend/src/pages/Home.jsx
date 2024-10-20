@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { markVisited } from '../redux/slices/placesSilces.jsx';
+import { markVisited,fetchPlaces } from '../redux/slices/placesSilces.jsx';
 import PlaceCard from '../components/PlaceCard';
 
 const Home = () => {
-  const places = useSelector(state => state.places);
   const dispatch = useDispatch();
+  const { places, loading, error } = useSelector((state) => state.places);
+
+  useEffect(() => {
+    dispatch(fetchPlaces());
+  }, []);
+
+  useEffect(() => {
+    console.log('Places Changed', places);
+  },[places])
   const [randomPlace, setRandomPlace] = useState(null);
 
   const handleMarkVisited = (id) => {
-    console.log('id', id);
     dispatch(markVisited(id));
   };
 
@@ -18,16 +25,21 @@ const Home = () => {
     setRandomPlace(places[randomIndex]);
   };
 
+
   useEffect(() => {
     console.log('Places Changed', places);
-  }, [places]);
+    console.log('Error', error);
+    console.log('Loading', loading);
+  }, [places,error,loading]);
   return (
     <main className="p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800">Historical Places</h2>
+        <h2 className="text-xl font-bold text-gray-800">Beautiful Places</h2>
       </div>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {places.map(place => (
+        {places && places.map(place => (
           <PlaceCard key={place.id} place={place} onMarkVisited={handleMarkVisited} />
         ))}
       </div>
