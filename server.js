@@ -10,20 +10,20 @@ app.use(express.json({ extended: false }));
 
 // Determine the frontend URL based on environment
 const frontendURL = process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL_PROD : process.env.FRONTEND_URL_LOCAL;
+app.use(cors());
 // Configure CORS with dynamic origin handling
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || origin === frontendURL) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
-};
-app.use(cors(corsOptions));
-// app.use(cors());
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (!origin || origin === frontendURL) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']
+// };
+// app.use(cors(corsOptions));
 // connect db
 connectDB();
 
