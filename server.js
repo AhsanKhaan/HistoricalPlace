@@ -28,6 +28,7 @@ const apiLimiter = rateLimit({
   app.use('/api/', apiLimiter);
 // routes
 app.use('/api/places', require('./routes/places'));
+app.use('/api/places', require('./routes/places'));
 
 // Swagger setup
 //swaggerSetup(app);

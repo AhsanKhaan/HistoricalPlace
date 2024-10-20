@@ -2,9 +2,20 @@ import {useEffect, useState} from 'react';
 import logo from '../assets/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
-
+import { useDispatch,useSelector } from 'react-redux';
+import {fetchSuggestedPlaces} from '../redux/slices/placesSuggesions.jsx';
 
 const Header = () => {
+  
+  const dispatch = useDispatch();
+  const {  lastFetched } = useSelector((state) => state.suggestedPlaces);
+  const handleExplorePlaces = () => {
+    if (!lastFetched) { // Fetch data only if it hasn't been fetched yet
+      dispatch(fetchSuggestedPlaces());
+    }
+  };
+  
+  
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,7 +43,7 @@ const Header = () => {
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <button
           className="text-black   hover:bg-white focus:ring-800  focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 text-center "
-          // onClick={suggestRandomPlace}
+          onClick={handleExplorePlaces}
         >
           Explore Places
           <FontAwesomeIcon icon={faMapLocationDot} className='ml-2'/>

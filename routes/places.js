@@ -58,4 +58,42 @@ router.get(
     }
   }
 );
+router.get(
+  '/suggested-places',
+  async (req, res) => {
+
+
+
+
+    try {
+
+      const placesPromises = Array.from({ length: 10 }).map(async (_, id) => {
+        try {
+          const imageUrl = await getRandomPlaceImage(); // Wait for the image URL to be fetched
+          return {
+            id: id + 1,
+            name: faker.location.city(), // Random city name + 'Landmark'
+            description: faker.lorem.sentence(), // Random description
+            image: imageUrl, // Fetched image URL
+          };
+        } catch (err) {
+          console.error(err.message);
+          return {
+            id: id + 1,
+            name: faker.location.city(), // Random city name + 'Landmark'
+            description: faker.lorem.sentence(), // Random description
+            image: faker.image.url(500, 500, 'landmark'), // Fetched image URL
+          };
+        }
+
+      });
+
+      const places = await Promise.all(placesPromises); // Resolve all promises
+      res.json(places);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ msg: 'Server error' });
+    }
+  }
+);
 module.exports = router;
