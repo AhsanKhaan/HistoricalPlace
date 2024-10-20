@@ -11,10 +11,10 @@ app.use(express.json({ extended: false }));
 connectDB();
 
 // routes
-
+app.use('/api/places', require('./routes/places'));
 
 // Swagger setup
-swaggerSetup(app);
+//swaggerSetup(app);
 
 // port
 const PORT = process.env.PORT || 8080;
