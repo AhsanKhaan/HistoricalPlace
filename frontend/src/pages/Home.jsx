@@ -5,15 +5,13 @@ import PlaceCard from '../components/PlaceCard';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { places, loading, error } = useSelector((state) => state.places);
+  const { places, loading, error, lastFetched } = useSelector((state) => state.places);
 
   useEffect(() => {
-    dispatch(fetchPlaces());
-  }, []);
-
-  useEffect(() => {
-    console.log('Places Changed', places);
-  },[places])
+    if (!lastFetched) { // Fetch data only if it hasn't been fetched yet
+      dispatch(fetchPlaces());
+    }
+  }, [dispatch, lastFetched]);
   const [randomPlace, setRandomPlace] = useState(null);
 
   const handleMarkVisited = (id) => {

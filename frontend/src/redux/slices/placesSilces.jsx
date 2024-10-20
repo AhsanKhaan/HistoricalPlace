@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL; 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -17,7 +17,7 @@ export const fetchPlaces = createAsyncThunk('places/fetchPlaces', async (_, thun
     } catch (error) {
       if (error.response && error.response.status === 429) {
         attempts += 1;
-        const waitTime = Math.pow(2, attempts) * 1000; // Exponential backoff
+        const waitTime = Math.pow(2, attempts) * 1000; //This Logic is applies due to Multiple Header Request Fixes For unsplash API
         await delay(waitTime);
       } else {
         return rejectWithValue(error.message);
@@ -27,12 +27,14 @@ export const fetchPlaces = createAsyncThunk('places/fetchPlaces', async (_, thun
 
   return rejectWithValue('Rate limit exceeded. Please try again later.');
 });
+
 export const placesSlice = createSlice({
   name: 'places',
   initialState: {
     places: [],
     loading: false,
     error: null,
+    lastFetched: null, // Add lastFetched to the initial state
   },
   reducers: {
     markVisited: (state, action) => {
@@ -51,6 +53,7 @@ export const placesSlice = createSlice({
       .addCase(fetchPlaces.fulfilled, (state, action) => {
         state.loading = false;
         state.places = action.payload;
+        state.lastFetched = Date.now(); // Update lastFetched on successful fetch
       })
       .addCase(fetchPlaces.rejected, (state, action) => {
         state.loading = false;
